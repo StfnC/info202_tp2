@@ -1,6 +1,8 @@
 package ca.qc.bdeb.info202.tp2;
 
-public abstract class Case {
+import java.io.Serializable;
+
+public abstract class Case implements Serializable {
     private String nom;
     private String description;
 
@@ -12,4 +14,12 @@ public abstract class Case {
     public abstract void effectuerAction(Joueur joueur);
 
     public abstract void survolerCase(Joueur joueur);
+
+    public String getNom() {
+        return this.nom;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
