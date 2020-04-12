@@ -22,4 +22,9 @@ public abstract class Case implements Serializable {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public String toString() {
+        return this.nom;
+    }
 }

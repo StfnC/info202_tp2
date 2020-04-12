@@ -3,13 +3,16 @@ package ca.qc.bdeb.info202.tp2;
 import java.io.Serializable;
 
 public class Joueur implements Serializable {
+    private final int ARGENT_DEPART = 800;
+
     private String nom;
-    private int argent = 800;
+    private int argent;
     private EtatFinancier etatFinancier = EtatFinancier.POSITIF;
     private int deLance;
 
     public Joueur(String nom) {
         this.nom = nom;
+        this.argent = ARGENT_DEPART;
     }
 
     public String getNom() {
