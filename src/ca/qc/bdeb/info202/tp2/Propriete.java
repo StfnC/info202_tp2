@@ -3,14 +3,15 @@ package ca.qc.bdeb.info202.tp2;
 import java.io.Serializable;
 import java.util.Scanner;
 
-public abstract class Propriete extends Case  implements Serializable {
-    private Joueur proprietaire = null;
+public abstract class Propriete extends Case {
+    private Joueur proprietaire;
     private int prixAchat;
     private int loyer;
 
     public Propriete(String nom, String description, int prixAchat) {
         super(nom, description);
         this.prixAchat = prixAchat;
+        this.proprietaire = null;
     }
 
     public int getPrixAchat() {
@@ -43,16 +44,17 @@ public abstract class Propriete extends Case  implements Serializable {
     }
 
     public void payerLoyer(Joueur joueur) {
-        // TODO: -Handle the case where the player that lands is the owner, so he doesn't bankrupt by paying himself
-        joueur.setArgent(joueur.getArgent() - this.getLoyer());
-        /*
-            Si le joueur n'a pas fait faillite en payant le loyer, le proprietaire recoit le montant du loyer,
-            sinon, le proprietaire recoit le montant du loyer moins l'argent que le joueur n'a pu payer
-         */
-        if (joueur.getEtatFinancier().equals(EtatFinancier.POSITIF)) {
-            this.getProprietaire().setArgent(this.getLoyer());
-        } else {
-            this.getProprietaire().setArgent(this.getLoyer() + joueur.getArgent());
+        if (!this.proprietaire.equals(joueur)) {
+            joueur.setArgent(joueur.getArgent() - this.getLoyer());
+            /*
+                Si le joueur n'a pas fait faillite en payant le loyer, le proprietaire recoit le montant du loyer,
+                sinon, le proprietaire recoit le montant du loyer moins l'argent que le joueur n'a pu payer
+             */
+            if (joueur.getEtatFinancier().equals(EtatFinancier.POSITIF)) {
+                this.proprietaire.setArgent(this.getLoyer());
+            } else {
+                this.proprietaire.setArgent(this.getLoyer() + joueur.getArgent());
+            }
         }
     }
 
@@ -77,6 +79,6 @@ public abstract class Propriete extends Case  implements Serializable {
 
     @Override
     public void survolerCase(Joueur joueur) {
-
+        // TODO: -Maybe do something here
     }
 }

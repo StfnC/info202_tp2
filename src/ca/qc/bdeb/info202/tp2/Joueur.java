@@ -3,7 +3,7 @@ package ca.qc.bdeb.info202.tp2;
 import java.io.Serializable;
 
 public class Joueur implements Serializable {
-    private final int ARGENT_DEPART = 800;
+    private final int ARGENT_DEPART = 400;
 
     private String nom;
     private int argent;
@@ -40,5 +40,10 @@ public class Joueur implements Serializable {
 
     public EtatFinancier getEtatFinancier() {
         return etatFinancier;
+    }
+
+    @Override
+    public String toString() {
+        return this.nom;
     }
 }

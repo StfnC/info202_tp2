@@ -7,6 +7,7 @@ public abstract class Case implements Serializable {
     private String description;
 
     public Case(String nom, String description) {
+        // TODO: -Adapt the class to work with the PlateauDeJeu.csv file
         this.nom = nom;
         this.description = description;
     }
