@@ -18,7 +18,10 @@ public class Partie implements Serializable {
         int valeurDe = joueur.getDeLance();
         // Cette equation permet d'obtenir un indice dans les limites du tableau
         int positionFinale = (joueur.getIndexCaseActuelle() + valeurDe) % this.plateauJeu.getCasesPlateau().length;
+
+        // On survole chaque case et sur la derniere, on effectue l'action
         for (int i = joueur.getIndexCaseActuelle() + 1; i <= (joueur.getIndexCaseActuelle() + valeurDe); i++) {
+            // La nouvelle position sera toujours dans le tableau
             int nouvellePosition = i % this.plateauJeu.getCasesPlateau().length;
             if (nouvellePosition == positionFinale) {
                 this.plateauJeu.getCasesPlateau()[nouvellePosition].effectuerAction(joueur);
@@ -27,5 +30,19 @@ public class Partie implements Serializable {
             }
         }
         joueur.setIndexCaseActuelle(positionFinale);
+    }
+
+    public void faireAvancerQueue() {
+        Joueur joueurQuiAJoue = this.joueurs.poll();
+        this.joueurs.offer(joueurQuiAJoue);
+        this.prochainJoueur = this.joueurs.peek();
+    }
+
+    @Override
+    public String toString() {
+        return "Partie {\n" +
+                "Joueurs: " + joueurs +
+                "\nProchain Joueur: " + prochainJoueur +
+                "\n}";
     }
 }

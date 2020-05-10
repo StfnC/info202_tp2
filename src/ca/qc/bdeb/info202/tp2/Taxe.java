@@ -28,4 +28,9 @@ public class Taxe extends Case {
     public void survolerCase(Joueur joueur) {
         joueur.setArgent(joueur.getArgent() - this.montantTaxeSansArreter);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + " " + this.getMontantTaxe();
+    }
 }

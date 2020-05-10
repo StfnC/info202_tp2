@@ -17,4 +17,10 @@ public class PlateauJeu implements Serializable {
     public Case[] getCasesPlateau() {
         return this.casesPlateau;
     }
+
+    public void afficherPlateau() {
+        for (int i = 0; i < this.casesPlateau.length; i++) {
+            System.out.println(i + ": " + this.casesPlateau[i]);
+        }
+    }
 }

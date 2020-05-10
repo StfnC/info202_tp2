@@ -89,4 +89,15 @@ public abstract class Propriete extends Case {
     @Override
     public void survolerCase(Joueur joueur) {
     }
+
+    @Override
+    public String toString() {
+        String descriptionCase = (super.toString() + " " + this.getPrixAchat() + " " + this.getLoyer());
+        if (proprietaire != null) {
+            descriptionCase += " achetee par " + this.proprietaire;
+        } else {
+            descriptionCase += " sans proprietaire";
+        }
+        return descriptionCase;
+    }
 }

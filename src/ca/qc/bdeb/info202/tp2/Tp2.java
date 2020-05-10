@@ -124,11 +124,19 @@ public class Tp2 {
         Case[] casesPlateau = creerTableauCases(lignesFichier);
         PlateauJeu plateauJeu = new PlateauJeu(casesPlateau);
         Joueur stefan = new Joueur("stefan");
+        Joueur joueur2 = new Joueur("joueur2");
+        Joueur joueur3 = new Joueur("joueur3");
+
         LinkedBlockingQueue<Joueur> joueurs = new LinkedBlockingQueue<>();
         joueurs.offer(stefan);
+        joueurs.offer(joueur2);
+        joueurs.offer(joueur3);
         Partie partie = new Partie(plateauJeu, joueurs);
         stefan.setDeLance(De.jeter());
-        partie.deplacerJoueur(stefan);
+        partie.faireAvancerQueue();
+        partie.faireAvancerQueue();
+        System.out.println(partie);
+//        partie.deplacerJoueur(stefan);
 
 //        for (String[] valeurs : lignesFichier) {
 //            for (String colonne : valeurs) {
