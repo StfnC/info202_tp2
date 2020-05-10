@@ -22,5 +22,6 @@ public class PlateauJeu implements Serializable {
         for (int i = 0; i < this.casesPlateau.length; i++) {
             System.out.println(i + ": " + this.casesPlateau[i]);
         }
+        System.out.println();
     }
 }

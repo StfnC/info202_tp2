@@ -38,6 +38,21 @@ public class Partie implements Serializable {
         this.prochainJoueur = this.joueurs.peek();
     }
 
+    public void afficherEtatJoueurs() {
+        System.out.println("***************** Les joueurs **********************");
+        for (Joueur joueur : this.joueurs) {
+            System.out.print(joueur + " est sur la case ");
+            System.out.print(this.plateauJeu.getCasesPlateau()[joueur.getIndexCaseActuelle()]);
+            System.out.println(" et possede " + joueur.getArgent() + "$");
+        }
+        System.out.println();
+    }
+
+    public void afficherPlateau() {
+        System.out.println("***************** Les cases   **********************");
+        this.plateauJeu.afficherPlateau();
+    }
+
     @Override
     public String toString() {
         return "Partie {\n" +

@@ -118,6 +118,20 @@ public class Tp2 {
         return nouvelleCase;
     }
 
+    public static void afficherMenuPrincipal() {
+        System.out.println("***************** Jeu de Monopoly *****************\n" +
+                "1) Charger la partie de sauvegarde\n" +
+                "2) Démarrer une nouvelle partie\n" +
+                "3) Quitter");
+    }
+
+    public static void afficherMenuDebutTour(Joueur prochainJoueur) {
+        System.out.println("C'est au tour de + " + prochainJoueur + "\n" +
+                "1) Lancer le dé\n" +
+                "2) Sauvegarder et quitter\n" +
+                "3) Mettre fin à la partie et quitter");
+    }
+
     public static void main(String[] args) {
         ArrayList<String[]> lignesFichier = lireFichierPlateau(NOM_FICHIER_PLATEAU);
         System.out.println(validerFichierPleateau(lignesFichier));
@@ -135,7 +149,8 @@ public class Tp2 {
         stefan.setDeLance(De.jeter());
         partie.faireAvancerQueue();
         partie.faireAvancerQueue();
-        System.out.println(partie);
+        partie.afficherEtatJoueurs();
+        partie.afficherPlateau();
 //        partie.deplacerJoueur(stefan);
 
 //        for (String[] valeurs : lignesFichier) {
