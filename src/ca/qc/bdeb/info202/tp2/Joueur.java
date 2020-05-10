@@ -10,10 +10,12 @@ public class Joueur implements Serializable {
     private EtatFinancier etatFinancier = EtatFinancier.POSITIF;
     private int deLance;
     private int indexCaseActuelle;
+    private int nbProprietes;
 
     public Joueur(String nom) {
         this.nom = nom;
         this.argent = ARGENT_DEPART;
+        this.nbProprietes = 0;
     }
 
     public String getNom() {
@@ -49,6 +51,14 @@ public class Joueur implements Serializable {
 
     public void setIndexCaseActuelle(int indexCaseActuelle) {
         this.indexCaseActuelle = indexCaseActuelle;
+    }
+
+    public int getNbProprietes() {
+        return this.nbProprietes;
+    }
+
+    public void setNbProprietes(int nbProprietes) {
+        this.nbProprietes = nbProprietes;
     }
 
     @Override

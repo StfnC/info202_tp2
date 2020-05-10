@@ -44,8 +44,14 @@ public abstract class Propriete extends Case {
     }
 
     public void payerLoyer(Joueur joueur) {
+        // TODO: -Doubler loyer si joueur a plus d'une propriete
         if (!this.proprietaire.equals(joueur)) {
-            joueur.setArgent(joueur.getArgent() - this.getLoyer());
+            if (joueur.getNbProprietes() > 1) {
+                // On double le loyer si le joueur possede plus de 2 proprietes
+                joueur.setArgent(joueur.getArgent() - (this.getLoyer() * 2));
+            } else {
+                joueur.setArgent(joueur.getArgent() - this.getLoyer());
+            }
             /*
                 Si le joueur n'a pas fait faillite en payant le loyer, le proprietaire recoit le montant du loyer,
                 sinon, le proprietaire recoit le montant du loyer moins l'argent que le joueur n'a pu payer
@@ -73,12 +79,16 @@ public abstract class Propriete extends Case {
     }
 
     public void acheterPropriete(Joueur acheteur) {
-        acheteur.setArgent(acheteur.getArgent() - this.prixAchat);
-        this.proprietaire = acheteur;
+        if (acheteur.getArgent() >= this.prixAchat) {
+            acheteur.setArgent(acheteur.getArgent() - this.prixAchat);
+            this.proprietaire = acheteur;
+            acheteur.setNbProprietes(acheteur.getNbProprietes() + 1);
+        } else {
+            System.out.println("Vous n'avez pas assez d'argent pour acheter cette propriete ");
+        }
     }
 
     @Override
     public void survolerCase(Joueur joueur) {
-        // TODO: -Maybe do something here
     }
 }

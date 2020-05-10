@@ -111,7 +111,7 @@ public class Tp2 {
         } else if (type.equalsIgnoreCase("P")) {
             nouvelleCase = new StationnementGratuit(nom, description);
         } else if (type.equalsIgnoreCase("SP")) {
-            nouvelleCase = new ServicePublic(nom, description, loyer);
+            nouvelleCase = new ServicePublic(nom, description, valeur);
         }
 
         return nouvelleCase;
@@ -122,6 +122,11 @@ public class Tp2 {
         System.out.println(validerFichierPleateau(lignesFichier));
         Case[] casesPlateau = creerTableauCases(lignesFichier);
         PlateauJeu plateauJeu = new PlateauJeu(casesPlateau);
+        Joueur stefan = new Joueur("stefan");
+        for (Case caseActuelle : casesPlateau) {
+            caseActuelle.effectuerAction(stefan);
+        }
+
 //        for (String[] valeurs : lignesFichier) {
 //            for (String colonne : valeurs) {
 //                System.out.print(colonne);

@@ -15,6 +15,6 @@ public class Depart extends Case {
 
     @Override
     public void survolerCase(Joueur joueur) {
-        joueur.setArgent(joueur.getArgent() + this.montantPourPasserDepart);
+        joueur.setArgent(joueur.getArgent() + Math.abs(this.montantPourPasserDepart));
     }
 }
