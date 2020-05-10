@@ -6,6 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Tp2 {
     public static final String NOM_FICHIER_PLATEAU = "plateau.csv";
+    public static final String NOM_FICHIER_SAUVEGARDE = "sauvegarde.bin";
     public static final int NB_TYPE_DE_CASES_AUTRE_QUE_DEPART = 4;
 
     public static ArrayList<String[]> lireFichierPlateau(String fichierPlateau) {
@@ -132,6 +133,34 @@ public class Tp2 {
                 "3) Mettre fin à la partie et quitter");
     }
 
+    public static void sauvegarderPartie(Partie partie) {
+        try (FileOutputStream fos = new FileOutputStream(NOM_FICHIER_SAUVEGARDE);
+                ObjectOutputStream oos = new ObjectOutputStream(fos)){
+            oos.writeObject(partie);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            // TODO: -Check all try/catch, make custom error messages
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Partie chargerSauvegardePartie() {
+        // TODO: -Make sure to check object isn't null in main
+        Partie partie = null;
+        try (FileInputStream fis = new FileInputStream(NOM_FICHIER_SAUVEGARDE);
+                ObjectInputStream ois = new ObjectInputStream(fis)){
+            partie = (Partie) ois.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return partie;
+    }
+
     public static void main(String[] args) {
         ArrayList<String[]> lignesFichier = lireFichierPlateau(NOM_FICHIER_PLATEAU);
         System.out.println(validerFichierPleateau(lignesFichier));
@@ -141,16 +170,20 @@ public class Tp2 {
         Joueur joueur2 = new Joueur("joueur2");
         Joueur joueur3 = new Joueur("joueur3");
 
+        Partie partie_sauvegarde = chargerSauvegardePartie();
+        System.out.println(partie_sauvegarde);
         LinkedBlockingQueue<Joueur> joueurs = new LinkedBlockingQueue<>();
         joueurs.offer(stefan);
         joueurs.offer(joueur2);
         joueurs.offer(joueur3);
         Partie partie = new Partie(plateauJeu, joueurs);
+        System.out.println(partie);
         stefan.setDeLance(De.jeter());
         partie.faireAvancerQueue();
         partie.faireAvancerQueue();
         partie.afficherEtatJoueurs();
         partie.afficherPlateau();
+        sauvegarderPartie(partie);
 //        partie.deplacerJoueur(stefan);
 
 //        for (String[] valeurs : lignesFichier) {
