@@ -2,6 +2,7 @@ package ca.qc.bdeb.info202.tp2;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Tp2 {
     public static final String NOM_FICHIER_PLATEAU = "plateau.csv";
@@ -123,9 +124,11 @@ public class Tp2 {
         Case[] casesPlateau = creerTableauCases(lignesFichier);
         PlateauJeu plateauJeu = new PlateauJeu(casesPlateau);
         Joueur stefan = new Joueur("stefan");
-        for (Case caseActuelle : casesPlateau) {
-            caseActuelle.effectuerAction(stefan);
-        }
+        LinkedBlockingQueue<Joueur> joueurs = new LinkedBlockingQueue<>();
+        joueurs.offer(stefan);
+        Partie partie = new Partie(plateauJeu, joueurs);
+        stefan.setDeLance(De.jeter());
+        partie.deplacerJoueur(stefan);
 
 //        for (String[] valeurs : lignesFichier) {
 //            for (String colonne : valeurs) {

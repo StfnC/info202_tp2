@@ -15,6 +15,7 @@ public class Joueur implements Serializable {
     public Joueur(String nom) {
         this.nom = nom;
         this.argent = ARGENT_DEPART;
+        this.indexCaseActuelle = 0;
         this.nbProprietes = 0;
     }
 

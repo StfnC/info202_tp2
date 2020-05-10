@@ -15,6 +15,17 @@ public class Partie implements Serializable {
     }
 
     public void deplacerJoueur(Joueur joueur) {
-
+        int valeurDe = joueur.getDeLance();
+        // Cette equation permet d'obtenir un indice dans les limites du tableau
+        int positionFinale = (joueur.getIndexCaseActuelle() + valeurDe) % this.plateauJeu.getCasesPlateau().length;
+        for (int i = joueur.getIndexCaseActuelle() + 1; i <= (joueur.getIndexCaseActuelle() + valeurDe); i++) {
+            int nouvellePosition = i % this.plateauJeu.getCasesPlateau().length;
+            if (nouvellePosition == positionFinale) {
+                this.plateauJeu.getCasesPlateau()[nouvellePosition].effectuerAction(joueur);
+            } else {
+                this.plateauJeu.getCasesPlateau()[nouvellePosition].survolerCase(joueur);
+            }
+        }
+        joueur.setIndexCaseActuelle(positionFinale);
     }
 }

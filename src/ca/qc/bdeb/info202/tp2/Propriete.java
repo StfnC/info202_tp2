@@ -44,7 +44,6 @@ public abstract class Propriete extends Case {
     }
 
     public void payerLoyer(Joueur joueur) {
-        // TODO: -Doubler loyer si joueur a plus d'une propriete
         if (!this.proprietaire.equals(joueur)) {
             if (joueur.getNbProprietes() > 1) {
                 // On double le loyer si le joueur possede plus de 2 proprietes
@@ -65,7 +64,6 @@ public abstract class Propriete extends Case {
     }
 
     public void proposerAcheterPropriete(Joueur joueur) {
-        // TODO: -Comment this method
         String reponseAchat = "";
         do {
             Scanner sc = new Scanner(System.in);
