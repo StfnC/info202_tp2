@@ -1,10 +1,11 @@
 package ca.qc.bdeb.info202.tp2;
 
 public class Depart extends Case {
-    private final int MONTANT_RECU_POUR_PASSER_DEPART = 25;
+    private int montantPourPasserDepart;
 
-    public Depart(String nom, String description) {
+    public Depart(String nom, String description, int montantPourPasserDepart) {
         super(nom, description);
+        this.montantPourPasserDepart = montantPourPasserDepart;
     }
 
     @Override
@@ -14,6 +15,6 @@ public class Depart extends Case {
 
     @Override
     public void survolerCase(Joueur joueur) {
-        joueur.setArgent(joueur.getArgent() + this.MONTANT_RECU_POUR_PASSER_DEPART);
+        joueur.setArgent(joueur.getArgent() + this.montantPourPasserDepart);
     }
 }

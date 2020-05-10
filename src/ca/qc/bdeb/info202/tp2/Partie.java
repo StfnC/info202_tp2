@@ -8,9 +8,13 @@ public class Partie implements Serializable {
     LinkedBlockingQueue<Joueur> joueurs;
     Joueur prochainJoueur;
 
-    public Partie(PlateauJeu plateauJeu, LinkedBlockingQueue<Joueur> joueurs, Joueur prochainJoueur) {
+    public Partie(PlateauJeu plateauJeu, LinkedBlockingQueue<Joueur> joueurs) {
         this.plateauJeu = plateauJeu;
         this.joueurs = joueurs;
-        this.prochainJoueur = prochainJoueur;
+        this.prochainJoueur = joueurs.peek();
+    }
+
+    public void deplacerJoueur(Joueur joueur) {
+
     }
 }

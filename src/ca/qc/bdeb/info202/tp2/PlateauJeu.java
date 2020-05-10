@@ -7,7 +7,6 @@ public class PlateauJeu implements Serializable {
     private Case[] casesPlateau;
 
     public PlateauJeu(Case[] casesPlateau) {
-        // TODO: -Maybe make sure the board is the right size
         this.casesPlateau = casesPlateau;
     }
 

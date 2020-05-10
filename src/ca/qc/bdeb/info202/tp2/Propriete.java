@@ -51,9 +51,9 @@ public abstract class Propriete extends Case {
                 sinon, le proprietaire recoit le montant du loyer moins l'argent que le joueur n'a pu payer
              */
             if (joueur.getEtatFinancier().equals(EtatFinancier.POSITIF)) {
-                this.proprietaire.setArgent(this.getLoyer());
+                this.proprietaire.setArgent(this.proprietaire.getArgent() + this.getLoyer());
             } else {
-                this.proprietaire.setArgent(this.getLoyer() + joueur.getArgent());
+                this.proprietaire.setArgent(this.proprietaire.getArgent() + this.getLoyer() + joueur.getArgent());
             }
         }
     }
@@ -63,9 +63,9 @@ public abstract class Propriete extends Case {
         String reponseAchat = "";
         do {
             Scanner sc = new Scanner(System.in);
-            System.out.println("Voulez-vous acheter " + this.toString() + " pour " + this.prixAchat + "$ (O ou N: ");
+            System.out.println("Voulez-vous acheter " + this.toString() + " pour " + this.prixAchat + "$ (O ou N): ");
             reponseAchat = sc.nextLine();
-        } while (!reponseAchat.equalsIgnoreCase("o") || !reponseAchat.equalsIgnoreCase("n"));
+        } while (!reponseAchat.equalsIgnoreCase("o") && !reponseAchat.equalsIgnoreCase("n"));
 
         if (reponseAchat.equalsIgnoreCase("o")) {
             this.acheterPropriete(joueur);

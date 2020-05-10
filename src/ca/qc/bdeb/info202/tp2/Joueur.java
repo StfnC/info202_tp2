@@ -9,6 +9,7 @@ public class Joueur implements Serializable {
     private int argent;
     private EtatFinancier etatFinancier = EtatFinancier.POSITIF;
     private int deLance;
+    private int indexCaseActuelle;
 
     public Joueur(String nom) {
         this.nom = nom;
@@ -40,6 +41,14 @@ public class Joueur implements Serializable {
 
     public EtatFinancier getEtatFinancier() {
         return etatFinancier;
+    }
+
+    public int getIndexCaseActuelle() {
+        return this.indexCaseActuelle;
+    }
+
+    public void setIndexCaseActuelle(int indexCaseActuelle) {
+        this.indexCaseActuelle = indexCaseActuelle;
     }
 
     @Override
