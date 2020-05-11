@@ -1,6 +1,7 @@
 package ca.qc.bdeb.info202.tp2;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Joueur implements Serializable {
     private final int ARGENT_DEPART = 400;
@@ -10,13 +11,13 @@ public class Joueur implements Serializable {
     private EtatFinancier etatFinancier = EtatFinancier.POSITIF;
     private int deLance;
     private int indexCaseActuelle;
-    private int nbProprietes;
+    private ArrayList<Propriete> proprietesJoueur;
 
     public Joueur(String nom) {
         this.nom = nom;
         this.argent = ARGENT_DEPART;
         this.indexCaseActuelle = 0;
-        this.nbProprietes = 0;
+        this.proprietesJoueur = new ArrayList<>();
     }
 
     public String getNom() {
@@ -54,12 +55,12 @@ public class Joueur implements Serializable {
         this.indexCaseActuelle = indexCaseActuelle;
     }
 
-    public int getNbProprietes() {
-        return this.nbProprietes;
+    public ArrayList<Propriete> getProprietesJoueur() {
+        return this.proprietesJoueur;
     }
 
-    public void setNbProprietes(int nbProprietes) {
-        this.nbProprietes = nbProprietes;
+    public void ajouterPropriete(Propriete propriete) {
+        this.proprietesJoueur.add(propriete);
     }
 
     @Override

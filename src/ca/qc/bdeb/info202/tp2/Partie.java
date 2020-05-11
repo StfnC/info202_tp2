@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Partie implements Serializable {
-    PlateauJeu plateauJeu;
-    LinkedBlockingQueue<Joueur> joueurs;
-    Joueur prochainJoueur;
+    private PlateauJeu plateauJeu;
+    private LinkedBlockingQueue<Joueur> joueurs;
+    private Joueur prochainJoueur;
 
     public Partie(PlateauJeu plateauJeu, LinkedBlockingQueue<Joueur> joueurs) {
         this.plateauJeu = plateauJeu;
@@ -42,7 +42,7 @@ public class Partie implements Serializable {
         System.out.println("***************** Les joueurs **********************");
         for (Joueur joueur : this.joueurs) {
             System.out.print(joueur + " est sur la case ");
-            System.out.print(this.plateauJeu.getCasesPlateau()[joueur.getIndexCaseActuelle()]);
+            System.out.print(this.plateauJeu.getCasesPlateau()[joueur.getIndexCaseActuelle()].getNom());
             System.out.println(" et possede " + joueur.getArgent() + "$");
         }
         System.out.println();
@@ -51,6 +51,18 @@ public class Partie implements Serializable {
     public void afficherPlateau() {
         System.out.println("***************** Les cases   **********************");
         this.plateauJeu.afficherPlateau();
+    }
+
+    public PlateauJeu getPlateauJeu() {
+        return this.plateauJeu;
+    }
+
+    public LinkedBlockingQueue<Joueur> getJoueurs() {
+        return this.joueurs;
+    }
+
+    public Joueur getProchainJoueur() {
+        return this.prochainJoueur;
     }
 
     @Override

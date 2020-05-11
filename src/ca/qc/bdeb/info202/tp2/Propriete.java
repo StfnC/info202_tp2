@@ -1,6 +1,5 @@
 package ca.qc.bdeb.info202.tp2;
 
-import java.io.Serializable;
 import java.util.Scanner;
 
 public abstract class Propriete extends Case {
@@ -45,10 +44,12 @@ public abstract class Propriete extends Case {
 
     public void payerLoyer(Joueur joueur) {
         if (!this.proprietaire.equals(joueur)) {
-            if (joueur.getNbProprietes() > 1) {
-                // On double le loyer si le joueur possede plus de 2 proprietes
+            if (joueur.getProprietesJoueur().size() > 1) {
+                System.out.println("Vous devez payer " + this.getLoyer() * 2 + "$ a " + this.proprietaire);
+                // On double le loyer si le joueur possede plus d'une propriete
                 joueur.setArgent(joueur.getArgent() - (this.getLoyer() * 2));
             } else {
+                System.out.println("Vous devez payer " + this.getLoyer() + "$ a " + this.proprietaire);
                 joueur.setArgent(joueur.getArgent() - this.getLoyer());
             }
             /*
@@ -80,9 +81,9 @@ public abstract class Propriete extends Case {
         if (acheteur.getArgent() >= this.prixAchat) {
             acheteur.setArgent(acheteur.getArgent() - this.prixAchat);
             this.proprietaire = acheteur;
-            acheteur.setNbProprietes(acheteur.getNbProprietes() + 1);
+            acheteur.ajouterPropriete(this);
         } else {
-            System.out.println("Vous n'avez pas assez d'argent pour acheter cette propriete ");
+            System.out.println("Vous n'avez pas assez d'argent pour acheter cette propriete");
         }
     }
 

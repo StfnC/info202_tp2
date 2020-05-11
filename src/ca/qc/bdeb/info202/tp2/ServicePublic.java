@@ -16,6 +16,7 @@ public class ServicePublic extends Propriete {
     @Override
     public void payerLoyer(Joueur joueur) {
         this.setLoyer(joueur.getDeLance() * MULTIPLICATEUR_LOYER);
+        System.out.println("Vous devez payer " + this.getLoyer() + "$ pour le service public");
         joueur.setArgent(joueur.getArgent() - this.getLoyer());
     }
 }

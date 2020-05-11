@@ -2,12 +2,15 @@ package ca.qc.bdeb.info202.tp2;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Tp2 {
     public static final String NOM_FICHIER_PLATEAU = "plateau.csv";
     public static final String NOM_FICHIER_SAUVEGARDE = "sauvegarde.bin";
     public static final int NB_TYPE_DE_CASES_AUTRE_QUE_DEPART = 4;
+    public static final int NB_JOUEURS_MIN = 2;
+    public static final int NB_JOUEURS_MAX = 3;
 
     public static ArrayList<String[]> lireFichierPlateau(String fichierPlateau) {
         // TODO: -Do this better
@@ -127,7 +130,7 @@ public class Tp2 {
     }
 
     public static void afficherMenuDebutTour(Joueur prochainJoueur) {
-        System.out.println("C'est au tour de + " + prochainJoueur + "\n" +
+        System.out.println("C'est au tour de " + prochainJoueur + "\n" +
                 "1) Lancer le dé\n" +
                 "2) Sauvegarder et quitter\n" +
                 "3) Mettre fin à la partie et quitter");
@@ -161,60 +164,145 @@ public class Tp2 {
         return partie;
     }
 
-    public static void main(String[] args) {
-        ArrayList<String[]> lignesFichier = lireFichierPlateau(NOM_FICHIER_PLATEAU);
-        System.out.println(validerFichierPleateau(lignesFichier));
-        Case[] casesPlateau = creerTableauCases(lignesFichier);
-        PlateauJeu plateauJeu = new PlateauJeu(casesPlateau);
-        Joueur stefan = new Joueur("stefan");
-        Joueur joueur2 = new Joueur("joueur2");
-        Joueur joueur3 = new Joueur("joueur3");
+    public static String demanderEntreeAuJoueur(String message) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println(message);
+        String reponse = sc.nextLine();
+        return reponse;
+    }
 
-        Partie partie_sauvegarde = chargerSauvegardePartie();
-        System.out.println(partie_sauvegarde);
-        LinkedBlockingQueue<Joueur> joueurs = new LinkedBlockingQueue<>();
-        joueurs.offer(stefan);
-        joueurs.offer(joueur2);
-        joueurs.offer(joueur3);
-        Partie partie = new Partie(plateauJeu, joueurs);
-        System.out.println(partie);
-        stefan.setDeLance(De.jeter());
-        partie.faireAvancerQueue();
-        partie.faireAvancerQueue();
+    public static String demanderChoixAuJoueur(String message, ArrayList<String> options) {
+        String reponse = "";
+        do {
+            reponse = demanderEntreeAuJoueur(message);
+        } while (!options.contains(reponse.toUpperCase()));
+        return reponse;
+    }
+
+    public static boolean jouerTour(Partie partie, String messageOptions, ArrayList<String> options) {
+        boolean jouer = true;
+        Joueur joueur = partie.getProchainJoueur();
         partie.afficherEtatJoueurs();
         partie.afficherPlateau();
-        sauvegarderPartie(partie);
-//        partie.deplacerJoueur(stefan);
+        afficherMenuDebutTour(joueur);
+        String choixJoueur = demanderChoixAuJoueur(messageOptions, options);
+        switch (choixJoueur) {
+            case "1":
+                int valeurDe = De.jeter();
+                joueur.setDeLance(valeurDe);
+                System.out.println("Vous avez obtenu: " + valeurDe);
+                partie.deplacerJoueur(joueur);
+                partie.faireAvancerQueue();
+                for (Joueur joueurDansPartie : partie.getJoueurs()) {
+                    if (joueurDansPartie.getEtatFinancier().equals(EtatFinancier.FAILLITE)) {
+                        determinerGagnant(partie);
+                        jouer = false;
+                    }
+                }
+                break;
+            case "2":
+                sauvegarderPartie(partie);
+                jouer = false;
+                break;
+            case "3":
+                determinerGagnant(partie);
+                jouer = false;
+                break;
+            default:
+                System.out.println("Il y a une probleme");
+        }
+        return jouer;
+    }
 
-//        for (String[] valeurs : lignesFichier) {
-//            for (String colonne : valeurs) {
-//                System.out.print(colonne);
-//            }
-//            System.out.println();
-//        }
-//        Joueur stefan = new Joueur("stefan");
-//        Joueur joueur2 = new Joueur("joueur2");
-//        Terrain terrain1 = new Terrain("terrain1", "Un terrain", 100, 20);
-//        Taxe taxe1 = new Taxe("Taxe 1", "une taxe", 50);
-//        Case[] cases = new Case[2];
-//        cases[0] = terrain1;
-//        cases[1] = taxe1;
-//        for (Case caseJeu : cases) {
-//            if (caseJeu instanceof Propriete) {
-//                ((Propriete) caseJeu).effectuerAction(stefan);
-//            }
-//        }
-//        for (Case caseJeu : cases) {
-//            if (caseJeu instanceof Propriete) {
-//                ((Propriete) caseJeu).effectuerAction(joueur2);
-//            }
-//        }
-//        System.out.println(stefan.getArgent());
-//        terrain1.effectuerAction(stefan);
-//        terrain1.effectuerAction(joueur2);
-//        taxe1.effectuerAction(stefan);
-//        taxe1.survolerCase(joueur2);
-//        System.out.println(stefan.getArgent());
-        System.out.println();
+    public static void determinerGagnant(Partie partie) {
+        Joueur gagnant = partie.getProchainJoueur();
+        ArrayList<Joueur> perdants = new ArrayList<>(partie.getJoueurs());
+
+        for (Joueur joueur : partie.getJoueurs()) {
+            if (joueur.getArgent() > gagnant.getArgent()) {
+                gagnant = joueur;
+            }
+        }
+
+        perdants.remove(gagnant);
+        System.out.println("Le gagnant est " + gagnant + " avec " + gagnant.getArgent() + "$");
+
+        for (Joueur perdant : perdants) {
+            System.out.println(perdant + " a perdu avec " + perdant.getArgent() + "$");
+        }
+    }
+
+    public static LinkedBlockingQueue<Joueur> creerJoueurs() {
+        LinkedBlockingQueue<Joueur> joueurs = new LinkedBlockingQueue<>();
+        ArrayList<String> optionsOuiNon = new ArrayList<>();
+        optionsOuiNon.add("O");
+        optionsOuiNon.add("N");
+        String veutAjouterJoueur = "O";
+        do {
+            if (joueurs.size() < NB_JOUEURS_MIN) {
+                String nomJoueur = demanderEntreeAuJoueur("Entrez le nom du joueur: ");
+                joueurs.add(new Joueur(nomJoueur));
+            } else {
+                veutAjouterJoueur = demanderChoixAuJoueur("Voulez-vous ajouter un autre joueur (O/N): ", optionsOuiNon);
+                if (veutAjouterJoueur.equalsIgnoreCase("O")) {
+                    String nomJoueur = demanderEntreeAuJoueur("Entrez le nom du joueur: ");
+                    joueurs.add(new Joueur(nomJoueur));
+                }
+            }
+        } while (joueurs.size() < NB_JOUEURS_MAX && veutAjouterJoueur.equalsIgnoreCase("O"));
+
+        return joueurs;
+    }
+
+    public static Partie demarerNouvellePartie() {
+        // TODO: -Make sur partie isn't null
+        Partie partie = null;
+        LinkedBlockingQueue<Joueur> joueurs = creerJoueurs();
+        ArrayList<String[]> lignesPlateau = lireFichierPlateau(NOM_FICHIER_PLATEAU);
+        System.out.println("Chargement du plateau de jeu ... OK");
+        if (validerFichierPleateau(lignesPlateau)) {
+            System.out.println("Validation du plateau de jeu ... OK");
+            Case[] tableauCases = creerTableauCases(lignesPlateau);
+            PlateauJeu plateauJeu = new PlateauJeu(tableauCases);
+            partie = new Partie(plateauJeu, joueurs);
+        } else {
+            // TODO: -Maybe create a custom PlateauInvalideException
+            System.out.println("Le fichier du plateau n'est pas valide");
+        }
+
+        return partie;
+    }
+
+    public static void main(String[] args) {
+        boolean jouer = true;
+        String messageTroisOptions = "Entrez votre choix (1, 2, 3): ";
+        ArrayList<String> choixMenuTroisOptions = new ArrayList<>();
+        choixMenuTroisOptions.add("1");
+        choixMenuTroisOptions.add("2");
+        choixMenuTroisOptions.add("3");
+        // TODO: Check for bankruptcy
+        afficherMenuPrincipal();
+        Partie partie;
+        String choixJeu = demanderChoixAuJoueur(messageTroisOptions, choixMenuTroisOptions);
+        switch (choixJeu) {
+            case "1":
+                partie = chargerSauvegardePartie();
+                System.out.println("Chargement de la sauvegarde ... OK");
+                do {
+                    jouer = jouerTour(partie, messageTroisOptions, choixMenuTroisOptions);
+                } while (jouer);
+                break;
+            case "2":
+                partie = demarerNouvellePartie();
+                do {
+                    jouer = jouerTour(partie, messageTroisOptions, choixMenuTroisOptions);
+                } while (jouer);
+                break;
+            case "3":
+                System.out.println("Au revoir");
+                break;
+            default:
+                System.out.println("Il y a une probleme");
+        }
     }
 }

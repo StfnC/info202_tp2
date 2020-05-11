@@ -21,11 +21,13 @@ public class Taxe extends Case {
 
     @Override
     public void effectuerAction(Joueur joueur) {
+        System.out.println("Vous devez payer " + montantTaxe + "$ en taxes");
         joueur.setArgent(joueur.getArgent() - this.montantTaxe);
     }
 
     @Override
     public void survolerCase(Joueur joueur) {
+        System.out.println("Vous devez payer " + montantTaxeSansArreter + "$ en taxes");
         joueur.setArgent(joueur.getArgent() - this.montantTaxeSansArreter);
     }
 
