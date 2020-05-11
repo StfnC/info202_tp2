@@ -13,7 +13,6 @@ public class Tp2 {
     public static final int NB_JOUEURS_MAX = 3;
 
     public static ArrayList<String[]> lireFichierPlateau(String fichierPlateau) {
-        // TODO: -Do this better
         ArrayList<String[]> lignesFichier = new ArrayList<>();
         try (
                 FileReader fis = new FileReader(fichierPlateau);
@@ -28,10 +27,9 @@ public class Tp2 {
             // On enleve la 1ere ligne, elle ne contient pas de case
             lignesFichier.remove(0);
         } catch (FileNotFoundException e) {
-            // TODO: -Modify the catch blocks
-            e.printStackTrace();
+            System.out.println("Le fichier du plateau n'a pas ete trouve");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("IO Exception");
         }
 
         return lignesFichier;
@@ -98,7 +96,6 @@ public class Tp2 {
     }
 
     public static Case creerCase(String[] infoCase) {
-        // TODO: -Find efficient way to read from csv and create board tile
         String type = infoCase[0].toLowerCase();
         String nom = infoCase[1];
         String description = infoCase[2];
@@ -141,25 +138,23 @@ public class Tp2 {
                 ObjectOutputStream oos = new ObjectOutputStream(fos)){
             oos.writeObject(partie);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            // TODO: -Check all try/catch, make custom error messages
+            System.out.println("Pas de fichier de sauvegarde");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la sauvegarde");
         }
     }
 
     public static Partie chargerSauvegardePartie() {
-        // TODO: -Make sure to check object isn't null in main
         Partie partie = null;
         try (FileInputStream fis = new FileInputStream(NOM_FICHIER_SAUVEGARDE);
                 ObjectInputStream ois = new ObjectInputStream(fis)){
             partie = (Partie) ois.readObject();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Pas de fichier de sauvegarde");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la sauvegarde");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la sauvegarde");
         }
         return partie;
     }
@@ -167,8 +162,7 @@ public class Tp2 {
     public static String demanderEntreeAuJoueur(String message) {
         Scanner sc = new Scanner(System.in);
         System.out.println(message);
-        String reponse = sc.nextLine();
-        return reponse;
+        return sc.nextLine();
     }
 
     public static String demanderChoixAuJoueur(String message, ArrayList<String> options) {
@@ -255,7 +249,6 @@ public class Tp2 {
     }
 
     public static Partie demarerNouvellePartie() {
-        // TODO: -Make sur partie isn't null
         Partie partie = null;
         LinkedBlockingQueue<Joueur> joueurs = creerJoueurs();
         ArrayList<String[]> lignesPlateau = lireFichierPlateau(NOM_FICHIER_PLATEAU);
@@ -266,7 +259,6 @@ public class Tp2 {
             PlateauJeu plateauJeu = new PlateauJeu(tableauCases);
             partie = new Partie(plateauJeu, joueurs);
         } else {
-            // TODO: -Maybe create a custom PlateauInvalideException
             System.out.println("Le fichier du plateau n'est pas valide");
         }
 
@@ -280,23 +272,30 @@ public class Tp2 {
         choixMenuTroisOptions.add("1");
         choixMenuTroisOptions.add("2");
         choixMenuTroisOptions.add("3");
-        // TODO: Check for bankruptcy
         afficherMenuPrincipal();
         Partie partie;
         String choixJeu = demanderChoixAuJoueur(messageTroisOptions, choixMenuTroisOptions);
         switch (choixJeu) {
             case "1":
                 partie = chargerSauvegardePartie();
-                System.out.println("Chargement de la sauvegarde ... OK");
-                do {
-                    jouer = jouerTour(partie, messageTroisOptions, choixMenuTroisOptions);
-                } while (jouer);
+                if (partie != null) {
+                    System.out.println("Chargement de la sauvegarde ... OK");
+                    do {
+                        jouer = jouerTour(partie, messageTroisOptions, choixMenuTroisOptions);
+                    } while (jouer);
+                } else {
+                    System.out.println("Erreur lors de la creation de la partie");
+                }
                 break;
             case "2":
                 partie = demarerNouvellePartie();
-                do {
-                    jouer = jouerTour(partie, messageTroisOptions, choixMenuTroisOptions);
-                } while (jouer);
+                if (partie != null) {
+                    do {
+                        jouer = jouerTour(partie, messageTroisOptions, choixMenuTroisOptions);
+                    } while (jouer);
+                } else {
+                    System.out.println("Erreur lors de la creation de la partie");
+                }
                 break;
             case "3":
                 System.out.println("Au revoir");

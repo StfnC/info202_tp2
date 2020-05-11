@@ -7,10 +7,6 @@ public abstract class Case implements Serializable {
     private String description;
 
     public Case(String nom, String description) {
-        /* TODO: -Adapt the class to work with the plateau.csv file
-                - Maybe create a new abstract parent class that has every tile except parking and has a loyer attribute
-         */
-
         this.nom = nom;
         this.description = description;
     }
