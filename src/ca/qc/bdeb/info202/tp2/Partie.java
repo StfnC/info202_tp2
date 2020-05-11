@@ -50,6 +50,7 @@ public class Partie implements Serializable {
 
     public void afficherPlateau() {
         System.out.println("***************** Les cases   **********************");
+        System.out.println("Nom, Valeur, Loyer, Proprietaire");
         this.plateauJeu.afficherPlateau();
     }
 

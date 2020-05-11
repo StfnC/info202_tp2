@@ -68,7 +68,7 @@ public abstract class Propriete extends Case {
         String reponseAchat = "";
         do {
             Scanner sc = new Scanner(System.in);
-            System.out.println("Voulez-vous acheter " + this.toString() + " pour " + this.prixAchat + "$ (O ou N): ");
+            System.out.println("Voulez-vous acheter " + this.getNom() + " pour " + this.prixAchat + "$ (O ou N): ");
             reponseAchat = sc.nextLine();
         } while (!reponseAchat.equalsIgnoreCase("o") && !reponseAchat.equalsIgnoreCase("n"));
 

@@ -1,7 +1,9 @@
 package ca.qc.bdeb.info202.tp2;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -165,15 +167,15 @@ public class Tp2 {
         return sc.nextLine();
     }
 
-    public static String demanderChoixAuJoueur(String message, ArrayList<String> options) {
+    public static String demanderChoixAuJoueur(String message, String[] options) {
         String reponse = "";
         do {
             reponse = demanderEntreeAuJoueur(message);
-        } while (!options.contains(reponse.toUpperCase()));
+        } while (!Arrays.asList(options).contains(reponse.toUpperCase()));
         return reponse;
     }
 
-    public static boolean jouerTour(Partie partie, String messageOptions, ArrayList<String> options) {
+    public static boolean jouerTour(Partie partie, String messageOptions, String[] options) {
         boolean jouer = true;
         Joueur joueur = partie.getProchainJoueur();
         partie.afficherEtatJoueurs();
@@ -228,9 +230,7 @@ public class Tp2 {
 
     public static LinkedBlockingQueue<Joueur> creerJoueurs() {
         LinkedBlockingQueue<Joueur> joueurs = new LinkedBlockingQueue<>();
-        ArrayList<String> optionsOuiNon = new ArrayList<>();
-        optionsOuiNon.add("O");
-        optionsOuiNon.add("N");
+        String[] optionsOuiNon = {"O", "N"};
         String veutAjouterJoueur = "O";
         do {
             if (joueurs.size() < NB_JOUEURS_MIN) {
@@ -268,10 +268,7 @@ public class Tp2 {
     public static void main(String[] args) {
         boolean jouer = true;
         String messageTroisOptions = "Entrez votre choix (1, 2, 3): ";
-        ArrayList<String> choixMenuTroisOptions = new ArrayList<>();
-        choixMenuTroisOptions.add("1");
-        choixMenuTroisOptions.add("2");
-        choixMenuTroisOptions.add("3");
+        String[] choixMenuTroisOptions = {"1", "2", "3"};
         afficherMenuPrincipal();
         Partie partie;
         String choixJeu = demanderChoixAuJoueur(messageTroisOptions, choixMenuTroisOptions);
