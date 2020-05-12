@@ -1,7 +1,6 @@
 package ca.qc.bdeb.info202.tp2;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -71,10 +70,10 @@ public class Tp2 {
 
     public static boolean validerFichierPleateau(ArrayList<String[]> lignesFichier) {
         boolean fichierValide = lignesFichier.size() == PlateauJeu.getNbCasesPlateau();
-        int tailleLigne = lignesFichier.get(0).length;
-        fichierValide &= validerTypesCasesFichier(lignesFichier);
 
         if (fichierValide) {
+            int tailleLigne = lignesFichier.get(0).length;
+            fichierValide &= validerTypesCasesFichier(lignesFichier);
             for (String[] ligne : lignesFichier) {
                 fichierValide &= ligne.length == tailleLigne;
                 try {
