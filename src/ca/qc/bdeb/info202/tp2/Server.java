@@ -58,11 +58,13 @@ public class Server {
         System.out.println("You are ready to play: ");
 
         Partie nouvellePartie = null;
+        sendGame();
 
         do {
             try {
                 nouvellePartie = (Partie) ois.readObject();
                 this.partie = nouvellePartie;
+                sendGame();
             }  catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -83,6 +85,7 @@ public class Server {
     private void closeConnections() {
         System.out.println("Closing connections...");
         try {
+            oos.flush();
             oos.close();
             ois.close();
             connection.close();
