@@ -7,11 +7,13 @@ public class Partie implements Serializable {
     private PlateauJeu plateauJeu;
     private LinkedBlockingQueue<Joueur> joueurs;
     private Joueur prochainJoueur;
+    private EtatPartie etatPartie;
 
     public Partie(PlateauJeu plateauJeu, LinkedBlockingQueue<Joueur> joueurs) {
         this.plateauJeu = plateauJeu;
         this.joueurs = joueurs;
         this.prochainJoueur = joueurs.peek();
+        this.etatPartie = EtatPartie.JOUER;
     }
 
     public void deplacerJoueur(Joueur joueur) {
@@ -72,5 +74,13 @@ public class Partie implements Serializable {
                 "Joueurs: " + joueurs +
                 "\nProchain Joueur: " + prochainJoueur +
                 "\n}";
+    }
+
+    public EtatPartie getEtatPartie() {
+        return this.etatPartie;
+    }
+
+    public void setEtatPartie(EtatPartie etatPartie) {
+        this.etatPartie = etatPartie;
     }
 }
